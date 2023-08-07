@@ -16,3 +16,5 @@ I learn a lot stuff related to data science skills.This bootcamp has 10 sprints 
 - Python programming
 - Essential Python for Data Analyst
 - Dashboard
+
+You can find me on LinkedIn : 
