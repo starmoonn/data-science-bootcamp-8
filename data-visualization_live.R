@@ -1,20 +1,8 @@
 library(tidyverse)
 
-# intro to data viz
-## grammar of graphic
-
-# How to select chart
-# มีหลักการ 2 แบบหลักๆ คือ
-# 1.จำนวนตัวแปร ถ้าเรารู้ว่าจำนวนแปรเรามีกี่ตัวเราจะเลือกกราฟได้ดีขึ้น
-# 2.เป็นตัวแปรประเภทไหนบ้าง
-# ไปดูในpdf ที่โหลดมาได้ว่า 1 variable ควรใช้แบบไหน 2 variable ควรใช้แบบไหน
-# dis crete จะไม่มีทศนิยม แต่ continus มีทศนิยมได้
-
 mtcars <- tibble(mtcars)
 
-# syntax (grammar)
-# ggplot will get 3 things is data mapping chartที่ต้องการจะพอต
-# ตรง mapping มี aes มาจากคำว่าความสวยงาม
+# ggplot will get 3 things is data mapping chartที่ต้องการจะ plot
 ggplot(data = mtcars,
        mapping = aes(x = mpg,y = hp)) + 
   geom_point()
@@ -29,8 +17,7 @@ ggplot(data = mtcars,
 
 #one variables - continuous
 # no parameter name
-# ตัวแรกที่อยู่ใน aes มันจะเป็นแกน x อยูแล้ว
-# bins ก็คือจำนวน bar
+
 ggplot(mtcars,aes(mpg)) + 
   geom_histogram(bins=10)
 
@@ -39,7 +26,7 @@ ggplot(mtcars,aes(mpg)) +
 
 #base layer
 base <- ggplot(data = mtcars,
-       mapping = aes(x = mpg))
+               mapping = aes(x = mpg))
 
 base + geom_boxplot()
 base + geom_histogram(bins = 5)
@@ -61,17 +48,14 @@ base2 <- ggplot(mtcars,aes(x = hp,y = mpg))
 base2 + geom_point()
 base2 + geom_smooth()
 
-# can ซ้อน layer ได้
+# สามารถซ้อน layer ได้
 base2 + 
   geom_point() +
   geom_smooth() +
   geom_rug()
 
-# we can ปรับ size color alpha(ความจางของชาร์จ)
-# ค่ายิ่งน้อยสียิ่งจาง
-# geom_rug เส้นประข้างๆ เส้นไหนที่มีเส้นประ เยอะๆ ตรงนั้นมีการกระจุกตัวมาก
 base2 + geom_point(size = 5,col = "red",alpha = 0.5) +
-        geom_rug()
+  geom_rug()
 
 # linear model (lm)
 base2 +
@@ -80,7 +64,7 @@ base2 +
               fill = "gold") +
   geom_point() +
   theme_minimal() # มันจะทำให้พื้นหลังสีเทาหายไป ชาร์จจะเด่นขึ้นมาเลย
-  # ทำ theme minimal มันจะทำให้พื้นหลังเป็นสีขาว chart มันจะเด่นขึ้น
+# ทำ theme minimal มันจะทำให้พื้นหลังเป็นสีขาว chart มันจะเด่นขึ้น
 
 ## two variables , one discrete
 ## one continuous
@@ -101,13 +85,13 @@ ggplot(diamonds,
 ggplot(diamonds,
        aes(x = clarity, y = carat)) +
   geom_boxplot()
-  
+
 ggplot(diamonds,
        aes(x = clarity, y = price)) +
   geom_boxplot()
 
 ggplot(diamonds,
-       aes(price)) + # แบบนี้มันจะเอาจุดทุกอันของทั้ง Fair good บลาๆมาหมดเลย
+       aes(price)) + 
   geom_boxplot()
 
 # ทำเป็นแกนตั้ง
@@ -129,9 +113,8 @@ agg_price_by_cut <- diamonds %>%
   summarise(
     med_price = median(price)
   )
-# ค่ากลางข้อมูลจัดกลุ่มตามตัวแปร cut
-# มันเป็นการเอาค่าmed หรือ ไอเส้นทึบๆตรงกลาง ใน boxplot มาสร้าง chart
-# อันด้านบนจะเป็นการ aggregate มาก่อน แล้วอันด้านล่างจะเป็นการ build พวก chart ขึ้นมา
+
+
 ggplot(agg_price_by_cut,
        aes(cut,med_price)) +
   geom_col()
@@ -154,25 +137,21 @@ qplot(data = diamonds,
 # or (follow adtoy)
 # default of bins it will = 30
 p2 <- qplot(x = price,
-      data = diamonds,
-      geom = "histogram",
-      bins = 100)
+            data = diamonds,
+            geom = "histogram",
+            bins = 100)
 
-# y = f(x) ,f(x=ตัวแปรต้น) ส่วน , y = ตัวแปรตาม
-# ในข้อนี้carat จะเป็นตัวแปรต้น ส่วน price เป็นตัวแปรตาม
-# because carat เป็นตัวกำหนด price ยิ่ง carat เยอะ price ก็จะยิ่งสูง
-# เวลา plot chart ตัวแปรต้นจะอยู่แกนนอน ส่วนแกนตั้งจะเป็นตัวแปรตาม
 # independent variable => x
 # dependent variable => y
 
 p3 <- qplot(x = carat,
-      y = price,
-      data = diamonds,
-      geom = "point")
+            y = price,
+            data = diamonds,
+            geom = "point")
 
 p4 <- qplot(x = cut,
-      data = diamonds,
-      geom = "bar")
+            data = diamonds,
+            geom = "bar")
 
 # plot หลายๆ chart มาเรียงต่อกันเลย
 library(patchwork)
@@ -268,7 +247,6 @@ ggplot(mini_diamonds,
   scale_color_gradient(low = "gold", #ราคาน้อยให้เป็นสีทอง ราคาน้อยเป็นสี น้ำเงิน
                        high = "blue") #ใช้กรณีที่ ทางด้านขวาเป็นแบบ color bar หรือ เป็น continuous
 
-# NOTE การที่เราจะเลือก scale_color_....อยู่ที่ col ว่าเป็นตัวแปรประเภทแบบไหน เช่น ตัวอย่างนี้ เป็นแบบ continuous เลยใช้ gredient
 
 ## facet 
 # เป็นการแบ่ง chart ใหญ่ เป็น chart ย่อยๆ
@@ -298,9 +276,9 @@ ggplot(mini_diamonds,
   theme_minimal() + 
   scale_color_gradient(low = "gold", 
                        high = "blue") +
-  facet_grid(cut ~ clarity) # มันจะรับ 2 ตัวแปร ตัวแปร 1 เป็นแกนนอน อีกตัวแปร เป็นแกนตั้ง
-  # เช่น ตัวอย่างนี้ตัวแปรนอนเป็น cut ตัวแปรตั้งเป็น clarity
-  # หรือ facet_grid(ตัวแปรนอน ~ ตัวแปรตั้ง)
+  facet_grid(cut ~ clarity) # จะรับ 2 ตัวแปร ตัวแปร 1 เป็นแกนนอน อีกตัวแปร เป็นแกนตั้ง
+# เช่น ตัวอย่างนี้ตัวแปรนอนเป็น cut ตัวแปรตั้งเป็น clarity
+# หรือ facet_grid(ตัวแปรนอน ~ ตัวแปรตั้ง)
 
 # เพิ่ม geom_smooth()
 ggplot(mini_diamonds, 
@@ -338,25 +316,11 @@ library(ggthemes)
 
 ggplot(diamonds,aes(cut,fill = color)) +
   geom_bar(position = "dodge") + 
-  theme_economist() # themes เพิ่มเติมได้ให้ดูสวยๆเก๋ๆ
+  theme_economist() 
 
 ggplot(diamonds,aes(cut,fill = color)) +
   geom_bar(position = "dodge") + 
-  theme_economist_white() # เข้าไปดูในเว็บggthemes ได้ มีหลายแบบเลย
-
-# HOMEWORK 1
-# ส่งเป็น pdf
-# ทำ chart อย่างน้อย 5 chart by use data diamonds
-# use diamonds dataset to create 5 charts. knit pdf and submit in discord
-# แต่ละchart พยายามตอบคำถาม 1 ข้อที่เราอยากรู้ เช่น ราคากับกะรัต มีความสัมพันธืกันแบบไหนนะ
-# กะรัต กับ ไพรซ์ กระจายตัวแบบไหนนะ เป็นต้น
-# หรือจะวิเคราะห์เรื่องอื่นก็ได้
-
-
-# HOMEWORK 2
-# วิเคราะห์ skooldio facebook โดยเราจะกวาดโพสตั้งแต่ต้นปีแล้วมาดูว่า content ประเภทไหนที่ได้ เอนเกรทเมนต์เยอะๆ
-# content ไหนที่ได้ เอนเกรทเมนต์เยอะกว่ากัน เช่น content รูปภาพ content วิดีโอ REELS เป็นต้น
-# สรุปย่อ เราจะวิเคราะห์ data จากpage skooldio ที่แอดทอยให้มาแล้วก็ build visualization ขึ้นมา
+  theme_economist_white() 
 
 
 
